@@ -27,6 +27,12 @@
     <ClInclude Include="Mode.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="NormalMode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="YuNet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlurMode.cpp">
@@ -36,6 +42,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MaskMode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="YuNet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="A.cpp">

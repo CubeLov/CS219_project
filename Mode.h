@@ -3,6 +3,7 @@
 class Mode {
 public:
 	enum Type {
+		Normal,
 		Blur,
 		Pixel,
 		Mask

@@ -5,8 +5,6 @@
 
 using namespace cv;
 
-void makeBlur(Mat img, int val);
-
 class BlurMode : public Mode {
 public:
 	BlurMode() : Mode(Blur) {}

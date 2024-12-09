@@ -5,8 +5,6 @@
 
 using namespace cv;
 
-void makePixel(Mat img, int val);
-
 class PixelMode : public Mode {
 public:
 	PixelMode() : Mode(Pixel) {}

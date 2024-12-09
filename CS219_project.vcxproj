@@ -137,13 +137,16 @@
     <ClInclude Include="BlurMode.h" />
     <ClInclude Include="MaskMode.h" />
     <ClInclude Include="Mode.h" />
+    <ClInclude Include="NormalMode.h" />
     <ClInclude Include="PixelMode.h" />
+    <ClInclude Include="YuNet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="A.cpp" />
     <ClCompile Include="BlurMode.cpp" />
     <ClCompile Include="MaskMode.cpp" />
     <ClCompile Include="PixelMode.cpp" />
+    <ClCompile Include="YuNet.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
