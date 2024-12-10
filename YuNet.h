@@ -20,10 +20,12 @@ public:
 		int target_id = 0);
 
 	static void visualize(const Mat& faces,
-		vector<shared_ptr<Mode>>& modes, Mat& output_image, float fps = -1.f);
+		vector<shared_ptr<Mode>>& modes, Mat& output_image, Mode::Type type, float fps = -1.f, int lev=0);
 
 	static void createMode(const Mat& faces, vector < shared_ptr<Mode>>& modes, Mat& output_image,
-		Mode::Type type, Mat mask, int val = 0);
+		Mode::Type type, Mat mask, int val=0);
+
+	static bool in_scale(Mat img, int x, int y, int w, int h);
 	/* Overwrite the input size when creating the model. Size format: [Width, Height].
 	*/
 	void setInputSize(const Size& input_size);

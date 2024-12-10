@@ -142,8 +142,8 @@
     <ClInclude Include="YuNet.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="A.cpp" />
     <ClCompile Include="BlurMode.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MaskMode.cpp" />
     <ClCompile Include="PixelMode.cpp" />
     <ClCompile Include="YuNet.cpp" />

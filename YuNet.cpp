@@ -34,7 +34,7 @@ Mat YuNet::infer(const Mat image)
 	return res;
 }
 
-void YuNet::visualize(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& output_image, float fps)
+void YuNet::visualize(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& output_image, Mode::Type type, float fps, int lev)
 {
 	static Scalar box_color{ 0, 255, 0 };
 	static vector<Scalar> landmark_color{
@@ -44,12 +44,20 @@ void YuNet::visualize(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& ou
 		Scalar(255,   0, 255), // right mouth corner
 		Scalar(0, 255, 255)  // left mouth corner
 	};
-	static Scalar text_color{ 0, 255, 0 };
+	static Scalar text_color{ 0, 0, 0 };
 
 	if (fps >= 0)
 	{
-		putText(output_image, format("FPS: %.2f", fps), Point(0, 15), FONT_HERSHEY_SIMPLEX, 0.5, text_color, 2);
+		putText(output_image, format("FPS: %.2f", fps), Point(3, 20), FONT_HERSHEY_SIMPLEX, 0.7, text_color, 2);
+		putText(output_image, Mode::to_string(type), Point(3, 50), FONT_HERSHEY_SIMPLEX, 0.7, text_color, 2);
+		if (type == Mode::Blur)
+			putText(output_image, "Blur level: " + to_string(lev + 1), Point(3, 80), FONT_HERSHEY_SIMPLEX, 0.7, text_color, 2);
+		if (type == Mode::Pixel)
+			putText(output_image, "Pixel level: " + to_string(lev + 1), Point(3, 80), FONT_HERSHEY_SIMPLEX, 0.7, text_color, 2);
 	}
+
+	if (modes.empty())
+		return;
 
 	for (int i = 0; i < faces.rows; ++i)
 	{
@@ -77,16 +85,30 @@ void YuNet::visualize(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& ou
 	}
 }
 
-void YuNet::createMode(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat &output_image, Mode::Type type, Mat mask, int val)
+bool YuNet::in_scale(Mat img, int x, int y, int w, int h) {
+	if (!(0 <= y && y <= img.rows && 0 <= x && x <= img.cols))
+		return false;
+	if (!(0 <= y + h && y + h <= img.rows && 0 <= x + w && x + w <= img.cols))
+		return false;
+	return true;
+}
+
+void YuNet::createMode(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& output_image, Mode::Type type, Mat mask, int val)
 {
 	for (int i = 0;i < faces.rows;i++) {
 		// Draw bounding boxes
+
+		/*
+		x1 is columns, y1 is rows
+		*/
 		int x1 = static_cast<int>(faces.at<float>(i, 0));
 		int y1 = static_cast<int>(faces.at<float>(i, 1));
 		int w = static_cast<int>(faces.at<float>(i, 2));
 		int h = static_cast<int>(faces.at<float>(i, 3));
 
-		Mat face = output_image(cv::Rect(x1+4, y1+4, w-8, h-8));
+		if (!YuNet::in_scale(output_image, x1, y1, w, h))
+			continue;
+		Mat face = output_image(cv::Rect(x1, y1, w, h));
 		shared_ptr<Mode> mode;
 		switch (type) {
 		case Mode::Type::Blur:
