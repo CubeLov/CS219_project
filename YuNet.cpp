@@ -106,9 +106,9 @@ void YuNet::createMode(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& o
 		int w = static_cast<int>(faces.at<float>(i, 2));
 		int h = static_cast<int>(faces.at<float>(i, 3));
 
-		if (!YuNet::in_scale(output_image, x1, y1, w, h))
+		if (!YuNet::in_scale(output_image, x1+3, y1+3, w-6, h-6))
 			continue;
-		Mat face = output_image(cv::Rect(x1, y1, w, h));
+		Mat face = output_image(cv::Rect(x1+3, y1+3, w-6, h-6));
 		shared_ptr<Mode> mode;
 		switch (type) {
 		case Mode::Type::Blur:

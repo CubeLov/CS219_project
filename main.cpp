@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <windows.h>
 #include "YuNet.h"
 #include "Mode.h"
 #include "MaskMode.h"
@@ -14,6 +15,23 @@ using namespace std;
 
 const int levBlur[] = { 11,17,23,29,35,41 };
 const int levPix[] = { 6,11,16,21,26,32 };
+
+string openFileDialog() {
+	char filePath[MAX_PATH] = { 0 };
+	OPENFILENAME ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFilter = "Image Files\0*.jpg;*.png;*.bmp\0All Files\0*.*\0";
+	ofn.lpstrFile = filePath;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+
+	if (GetOpenFileName(&ofn)) {
+		return std::string(filePath);
+	}
+	return "";
+}
 
 int main() {
 	string model_path = "face_detection_yunet_2023mar.onnx";
@@ -55,7 +73,7 @@ int main() {
 		YuNet::createMode(faces, modes, res_image, cur_mode, mask, val);
 		YuNet::visualize(faces, modes, res_image, cur_mode, (float)tick_meter.getFPS(), ind);
 		// Visualize in a new window
-		cv::imshow("YuNet Demo", res_image);
+		cv::imshow("Real-Time Privacy Protection Tool", res_image);
 
 		tick_meter.reset();
 		char key = static_cast<char>(waitKey(5));
@@ -93,6 +111,10 @@ int main() {
 				ind = (ind + 5) % 6;
 				val = levPix[ind];
 			}
+			break;
+		case 'u':
+			string path = openFileDialog();
+			mask = imread(path);
 			break;
 		}
 	}
