@@ -1,3 +1,7 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <memory>
@@ -40,7 +44,7 @@ int main(int argc, char** argv) {
 		"{mode  a           | blur                               | Set start mode}"
 		"{blur_size         | 1                                  | Set start blur level}"
 		"{pixel_size        | 1                                  | Set start pixel level}"
-		"{mask_image        | 1.jpg                              | Set default image path}"
+		"{mask_image        | default.jpg                        | Set default image path}"
 		"{device            | 0                                  | Set device id}"
 	);
 	if (parser.has("help"))
