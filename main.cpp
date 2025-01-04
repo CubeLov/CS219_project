@@ -33,14 +33,33 @@ string openFileDialog() {
 	return "";
 }
 
-int main() {
-	string model_path = "face_detection_yunet_2023mar.onnx";
+int main(int argc, char** argv) {
+	CommandLineParser parser(argc, argv,
+		"{help  h           |                                    | Print this message}"
+		"{model m           | face_detection_yunet_2023mar.onnx  | Set path to the model}"
+		"{mode  a           | blur                               | Set start mode}"
+		"{blur_size         | 1                                  | Set start blur level}"
+		"{pixel_size        | 1                                  | Set start pixel level}"
+		"{mask_image        | 1.jpg                              | Set default image path}"
+		"{device            | 0                                  | Set device id}"
+	);
+	if (parser.has("help"))
+	{
+		parser.printMessage();
+		return 0;
+	}
+
+	string model_path = parser.get<string>("model");
+	string default_mode = parser.get<string>("mode");
+	string default_mask_path = parser.get<string>("mask_image");
+	int default_blur_size = parser.get<int>("blur_size");
+	int default_pixel_size = parser.get<int>("pixel_size");
 	const int backend_id = dnn::DNN_BACKEND_OPENCV;
 	const int target_id = dnn::DNN_TARGET_CPU;
 
 	YuNet model(model_path, cv::Size(320, 320), 0.9, 0.3, 5000, backend_id, target_id);
 
-	int device_id = 0;
+	int device_id = parser.get<int>("device");
 	auto cap = cv::VideoCapture(device_id);
 	int w = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
 	int h = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
@@ -48,13 +67,24 @@ int main() {
 
 	auto tick_meter = cv::TickMeter();
 	cv::Mat frame;
-	Mat mask = imread("D:\\tmp\\OIP.jpg");
+	Mode::Type cur_mode = Mode::to_mode(default_mode);
+	Mat mask = imread(cur_mode == Mode::Mask ? default_mask_path : "1.jpg");
 
-	Mode::Type cur_mode = Mode::Type::Normal;
 	vector<shared_ptr<Mode>> modes;
 
 
-	int val = 0, ind = 0;
+	int val = 0, ind_blur = 0, ind_pixel = 0;
+	switch (cur_mode) {
+	case Mode::Type::Blur:
+		ind_blur = default_blur_size - 1;
+		val = levBlur[ind_blur];
+		break;
+	case Mode::Type::Pixel:
+		ind_pixel = default_pixel_size - 1;
+		val = levPix[ind_pixel];
+		break;
+	}
+
 	while (true) {
 		bool has_frame = cap.read(frame);
 		if (!has_frame)
@@ -71,6 +101,7 @@ int main() {
 		modes.clear();
 		// Draw results on the input image
 		YuNet::createMode(faces, modes, res_image, cur_mode, mask, val);
+		int ind = (cur_mode == Mode::Type::Blur ? ind_blur : ind_pixel);
 		YuNet::visualize(faces, modes, res_image, cur_mode, (float)tick_meter.getFPS(), ind);
 		// Visualize in a new window
 		cv::imshow("Real-Time Privacy Protection Tool", res_image);
@@ -80,11 +111,11 @@ int main() {
 		switch (key) {
 		case '1': // Key 1
 			cur_mode = Mode::Type::Blur;
-			val = levBlur[ind];
+			val = levBlur[ind_blur];
 			break;
 		case '2': // Key 2
 			cur_mode = Mode::Type::Pixel;
-			val = levPix[ind];
+			val = levPix[ind_pixel];
 			break;
 		case '3': // Key 3
 			cur_mode = Mode::Type::Mask;
@@ -94,22 +125,22 @@ int main() {
 			break;
 		case ']': // Key ]
 			if (cur_mode == Mode::Type::Blur) {
-				ind = (ind + 1) % 6;
-				val = levBlur[ind];
+				ind_blur = (ind_blur + 1) % 6;
+				val = levBlur[ind_blur];
 			}
 			else if (cur_mode == Mode::Type::Pixel) {
-				ind = (ind + 1) % 6;
-				val = levPix[ind];
+				ind_pixel = (ind_pixel + 1) % 6;
+				val = levPix[ind_pixel];
 			}
 			break;
 		case '[': // Key [
 			if (cur_mode == Mode::Type::Blur) {
-				ind = (ind + 5) % 6;
-				val = levBlur[ind];
+				ind_blur = (ind_blur + 5) % 6;
+				val = levBlur[ind_blur];
 			}
 			else if (cur_mode == Mode::Type::Pixel) {
-				ind = (ind + 5) % 6;
-				val = levPix[ind];
+				ind_pixel = (ind_pixel + 5) % 6;
+				val = levPix[ind_pixel];
 			}
 			break;
 		case 'u':

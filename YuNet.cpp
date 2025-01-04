@@ -75,7 +75,7 @@ void YuNet::visualize(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& ou
 
 		// Draw landmarks
 		if (modes[i]->getType() == Mode::Type::Normal) {
-			putText(output_image, format("%.4f", conf), Point(x1, y1 + 12), FONT_HERSHEY_DUPLEX, 0.5, text_color);
+			putText(output_image, format("%.4f", conf), Point(x1, y1 + 12), FONT_HERSHEY_DUPLEX, 0.5, Scalar(0,255,0));
 			for (int j = 0; j < landmark_color.size(); ++j)
 			{
 				int x = static_cast<int>(faces.at<float>(i, 2 * j + 4)), y = static_cast<int>(faces.at<float>(i, 2 * j + 5));
@@ -96,8 +96,6 @@ bool YuNet::in_scale(Mat img, int x, int y, int w, int h) {
 void YuNet::createMode(const Mat& faces, vector<shared_ptr<Mode>>& modes, Mat& output_image, Mode::Type type, Mat mask, int val)
 {
 	for (int i = 0;i < faces.rows;i++) {
-		// Draw bounding boxes
-
 		/*
 		x1 is columns, y1 is rows
 		*/

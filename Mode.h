@@ -37,6 +37,16 @@ public:
 		}
 		return res;
 	}
+
+	static Type to_mode(const string& str) {
+		if (str == "blur")
+			return Blur;
+		else if (str == "pixel")
+			return Pixel;
+		else if (str == "mask")
+			return Mask;
+		return Normal;
+	}
 	
 protected:
 	Type type_;
