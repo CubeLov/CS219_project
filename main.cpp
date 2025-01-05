@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
 	auto tick_meter = cv::TickMeter();
 	cv::Mat frame;
 	Mode::Type cur_mode = Mode::to_mode(default_mode);
-	Mat mask = imread(cur_mode == Mode::Mask ? default_mask_path : "1.jpg");
+	Mat mask = imread(cur_mode == Mode::Mask ? default_mask_path : "default.jpg");
 
 	vector<shared_ptr<Mode>> modes;
 
