@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 		"{blur_size         | 1                                  | Set start blur level}"
 		"{pixel_size        | 1                                  | Set start pixel level}"
 		"{mask_image        | default.jpg                        | Set default image path}"
-		"{device            | 0                                  | Set device id}"
+		"{device            | 1                                  | Set device id}"
 	);
 	if (parser.has("help"))
 	{
@@ -63,8 +63,12 @@ int main(int argc, char** argv) {
 
 	YuNet model(model_path, cv::Size(320, 320), 0.9, 0.3, 5000, backend_id, target_id);
 
+	_putenv("OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS=0");
+
 	int device_id = parser.get<int>("device");
-	auto cap = cv::VideoCapture(device_id);
+	auto cap = cv::VideoCapture(device_id, CAP_MSMF);
+	//auto cap = cv::VideoCapture(d/*ev*/ice_id);
+
 	int w = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
 	int h = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
 	model.setInputSize(cv::Size(w, h));
