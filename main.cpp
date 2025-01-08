@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 		"{blur_size         | 1                                  | Set start blur level}"
 		"{pixel_size        | 1                                  | Set start pixel level}"
 		"{mask_image        | default.jpg                        | Set default image path}"
-		"{device            | 1                                  | Set device id}"
+		"{device            | 0                                  | Set device id}"
 	);
 	if (parser.has("help"))
 	{
@@ -66,8 +66,7 @@ int main(int argc, char** argv) {
 	_putenv("OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS=0");
 
 	int device_id = parser.get<int>("device");
-	auto cap = cv::VideoCapture(device_id, CAP_MSMF);
-	//auto cap = cv::VideoCapture(d/*ev*/ice_id);
+	auto cap = VideoCapture(device_id, CAP_MSMF);
 
 	int w = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_WIDTH));
 	int h = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
@@ -97,7 +96,7 @@ int main(int argc, char** argv) {
 		bool has_frame = cap.read(frame);
 		if (!has_frame)
 		{
-			std::cout << "No frames grabbed! Exiting ...\n";
+			std::cerr << "No frames grabbed! Exiting ...\n";
 			break;
 		}
 		// Inference

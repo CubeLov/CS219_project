@@ -11,7 +11,7 @@ using namespace std;
 
 void MaskMode::handle() {
 	if (img_.empty() || mask_.empty()) {
-		cout << "Error: 无法读取图像" << '\n';
+		cerr << "Error: 无法读取图像" << '\n';
 		return;
 	}
 	Mat resizedMask;

@@ -11,7 +11,7 @@ using namespace std;
 
 void BlurMode::handle() {
 	if (img_.empty()) {
-		cout << "Error: 无法读取图像" << '\n';
+		cerr << "Error: 无法读取图像" << '\n';
 		return;
 	}
 	GaussianBlur(img_, img_, Size(val_, val_), 0, 0);

@@ -11,11 +11,11 @@ using namespace std;
 
 void PixelMode::handle() {
 	if (img_.empty()) {
-		cout << "Error: ÎÞ·¨¶ÁÈ¡Í¼Ïñ" << '\n';
+		cerr << "Error: ÎÞ·¨¶ÁÈ¡Í¼Ïñ" << '\n';
 		return;
 	}
 	if (val_ < 1) {
-		cout << "Error: ÏñËØ»­²ÎÊý´íÎó" << '\n';
+		cerr << "Error: ÏñËØ»­²ÎÊý´íÎó" << '\n';
 		return;
 	}
 
