@@ -21,7 +21,7 @@
 
 ### 三、代码实现
 
-[![Project.png](https://free4.yunpng.top/2025/01/08/677e30f348eff.png)](https://free4.yunpng.top/2025/01/08/677e30f348eff.png)
+![Project.png](https://free4.yunpng.top/2025/01/08/677e30f348eff.png)
 
 我将项目设计为以上结构，其中Mode类主要负责具体模糊模式的实现，YuNet主要负责模型的调用及对具体视频图像的处理。下面将对各个部分代码进行详细介绍。
 
@@ -33,19 +33,19 @@
 
    该类为Mode的派生类，具体负责对于传入的Mat进行高斯模糊处理。通过调用CV库中的`GaussianBlur`函数实现，将传入Mat和传出Mat均设置为img_，通过调整高斯核的大小来设置模糊程度，后两个参数代表高斯核在X，Y方向的标准差，设置为0表示模糊程度仅与核大小有关。
 
-   [![BlurMode.png](https://free4.yunpng.top/2025/01/08/677e43f8f19aa.png)](https://free4.yunpng.top/2025/01/08/677e43f8f19aa.png)
+   ![BlurMode.png](https://free4.yunpng.top/2025/01/08/677e43f8f19aa.png)
 
 3. PixelMode
 
    该类为Mode的派生类，具体负责对传入的Mat进行两次resize，达到像素化的效果。val_值表示将目标区域压缩为$\{h/val\_,\ w/val\_\}$后在放大填充回原来区域。`INTER_LINEAR`与`INTER_NEAREST`与插值算法有关，保证了较好的像素化效果。
 
-   [![PixelMode.png](https://free4.yunpng.top/2025/01/08/677e6279b95b8.png)](https://free4.yunpng.top/2025/01/08/677e6279b95b8.png)
+   ![PixelMode.png](https://free4.yunpng.top/2025/01/08/677e6279b95b8.png)
 
 4. MaskMode
 
    该类为Mode的派生类，具体负责用传入图片遮罩Mat。通过对传入图片进行resize，使其大小与人脸识别框相匹配，再通过Mat类的深拷贝函数`copyTo`达成遮罩效果。通过windows.h库中的`GetOpenFileName`函数，可以在程序运行时打开对话框，手动选择图片路径来更改遮罩图片。
 
-   [![MaskMode.png](https://free4.yunpng.top/2025/01/08/677e6e0d7abf1.png)](https://free4.yunpng.top/2025/01/08/677e6e0d7abf1.png)
+   ![MaskMode.png](https://free4.yunpng.top/2025/01/08/677e6e0d7abf1.png)
 
 5. Normal Mode
 
@@ -55,7 +55,7 @@
 
    该类参考了YuNet demo中的代码，对YuNet模型进行了封装，并实现了对人脸识别区域的模糊化处理。具体实现了`createMode`和`visualize`两个函数，其中`createMode`负责针对每一个识别框模糊任务的创建，`visualize`通过调用所有模式的`handle`函数执行模糊任务，并处理其它对捕捉视频画面的显示修改内容。
 
-   [![YuNetFun.png](https://free4.yunpng.top/2025/01/08/677e745995dd7.png)](https://free4.yunpng.top/2025/01/08/677e745995dd7.png)
+   ![YuNetFun.png](https://free4.yunpng.top/2025/01/08/677e745995dd7.png)
 
 7. 命令行实现
 
@@ -102,4 +102,8 @@
 [Visual Studio + OpenCV + OpenCV_contrib 源代码编译流程 - 知乎](https://zhuanlan.zhihu.com/p/344036896)
 
 [C++计算机视觉库OpenCV在Visual Studio 2022的配置方法_visual studio 2022 opencv-CSDN博客](https://blog.csdn.net/zhebushibiaoshifu/article/details/128260507)
+
+
+
+
 
